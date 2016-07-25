@@ -16,6 +16,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // set up a listener:
+        let notificationCtr = NSNotificationCenter.defaultCenter()
+        notificationCtr.addObserver(
+            self,
+            selector:#selector(ViewController.imageDownloadNotification),
+            name: "ImageDownloaded",
+            object: nil
+        )
+        
         
         self.navigationController?.navigationBar.barTintColor = .lightGrayColor()
         
@@ -39,6 +48,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     }
     
+    func imageDownloadNotification(){
+        self.startupsTable.reloadData()
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.startupsList.count
     }
@@ -49,11 +62,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if let cell = tableView.dequeueReusableCellWithIdentifier(cellId){
             cell.textLabel?.text = startup.name
             cell.detailTextLabel?.text = startup.city
+            if (startup.imageData != nil){
+                cell.imageView?.image = startup.imageData
+                return cell
+            }
+            startup.fetchImage()
             return cell
         }
         let cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellId)
         cell.textLabel?.text = startup.name
         cell.detailTextLabel?.text = startup.city
+        if (startup.imageData != nil){
+            cell.imageView?.image = startup.imageData
+            return cell
+        }
+        startup.fetchImage()
         return cell
     }
 

@@ -62,8 +62,11 @@ class Startup: NSObject {
                 let notification = NSNotification(name: "ImageDownloaded", object: nil)
                 notificationCtr.postNotification(notification)
             }
-            
         }
     }
- 
-} // Fin.
+}
+
+
+
+
+
