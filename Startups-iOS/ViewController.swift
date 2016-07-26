@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate {
 
     @IBOutlet var startupsTable: UITableView!
     var startupsList = Array<Startup>()
@@ -86,7 +86,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: true)
+        let startup = self.startupsList[indexPath.row]
+        let startupVc = StartupViewController()
+        startupVc.startup = startup
+        self.navigationController?.pushViewController(startupVc, animated: true)
     }
 
     
